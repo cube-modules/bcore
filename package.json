@@ -1,0 +1,33 @@
+{
+  "name": "@ali/core",
+  "title": "Core",
+  "description": "Core JavaScript library for browser runtime",
+  "version": "0.0.1",
+  "author": {
+    "name": "jianxun.zxl"
+  },
+  "publishConfig": {
+    "registry": "http://registry.npm.alibaba-inc.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/"
+  },
+  "keywords": [
+    "javascript",
+    "browser",
+    "library"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "*",
+    "expect.js": "0.3.1",
+    "jscoverage": "0.5.6"
+  },
+  "maintainers": [
+    {
+      "name": "jianxun.zxl",
+      "email": "jianxun.zxl@alibaba-inc.com"
+    }
+  ]
+}
