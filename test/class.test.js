@@ -1,4 +1,4 @@
-var Class = require('../lib/class');
+var Class = require('../class');
 var expect = require('expect.js');
 
 describe('class.js', function () {
@@ -35,9 +35,24 @@ describe('class.js', function () {
       this._super.apply(this, [a, b]);
       this.sum = a + b + c;
     });
-    var test = new TestClassB(1,2,3);
+    var test = new TestClassB(1, 2, 3);
+    expect(test instanceof TestClassB);
+    expect(test instanceof TestClassA);
+    expect(test.constructor).to.be(TestClassB);
     expect(test.value).to.be(3);
     expect(test.sum).to.be(6);
+  });
+  it('expect new instanceof by create()', function () {
+    var TestClassA = Class.extend(function TestClassA(a, b) {
+      this.value = a + b;
+    });
+    var TestClassB = TestClassA.extend(function TestClassB(a, b, c) {
+      this._super.apply(this, [a, b]);
+      this.sum = a + b + c;
+    });
+    var test = TestClassB.create(1, 2, 3);
+    expect(test instanceof TestClassA);
+    expect(test instanceof TestClassB);
   });
 
   it('expect override function ok', function () {

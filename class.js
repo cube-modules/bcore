@@ -1,4 +1,4 @@
-function Class() {};
+function Class() {}
 /**
  * Create a new Class that inherits from this class
  * @param  {Function} fn    [description]
@@ -30,7 +30,7 @@ Class.extend = function (newClass, proto) {
   if (Object.create) {
     prototype = Object.create(superClass.prototype, {
       constructor: {
-        value: superClass,
+        value: newClass,
         enumerable: false,
         writable: true,
         configurable: true
@@ -41,7 +41,6 @@ Class.extend = function (newClass, proto) {
     prototype.constructor = newClass;
   }
   // Populate our constructed prototype object
-
   if (proto) {
     for(i in proto) {
       if (proto.hasOwnProperty(i)) {
@@ -56,18 +55,18 @@ Class.extend = function (newClass, proto) {
   newClass.extend = arguments.callee;
   newClass.create = function () {
     var len = arguments.length;
-    var args = ['a'];
+    var args = ['cls', 'a'];
     var params = [];
     for (var i = 0; i < len; i++) {
       params.push('a[' + i + ']');
     }
-    args.push('return new newClass(', params.join(','), ');');
-    var fn = Function.apply(this, args)(arguments);
+    args.push('return new cls(' + params.join(',') + ');');
+    var fn = Function.apply(this, args)(this, arguments);
     // 父级构造
     // superClass.apply(fn,arguments);
     // 当前构造
     fn.__constructor && fn.__constructor.apply(fn, arguments);
-    return n;
+    return fn;
   };
 
   return newClass;

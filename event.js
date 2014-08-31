@@ -27,7 +27,7 @@ var Class = require('./class');
 //var isArray = Array.isArray;
 var isArray = Array.isArray || function(obj){
 	return Object.prototype.toString.call(obj) === '[object Array]' ? true : false;
-}
+};
 
 function EventEmitter(){}
 Class.extend(EventEmitter);
@@ -142,8 +142,7 @@ EventEmitter.prototype.addListener = function(type, listener) {
 
     if (m && m > 0 && this._events[type].length > m) {
       this._events[type].warned = true;
-      console.error('(node) warning: possible EventEmitter memory ' +
-                    'leak detected. %d listeners added. ' +
+      console.error('Possible mem-leak detected. event[' + type +'] %d listeners added. ' +
                     'Use emitter.setMaxListeners() to increase limit.',
                     this._events[type].length);
       console.trace();
@@ -225,25 +224,3 @@ EventEmitter.prototype.listeners = function(type) {
   }
   return this._events[type];
 };
-
-/* extends nodejs events
-EventEmitter.prototype.rm = EventEmitter.prototype.removeListener;
-EventEmitter.prototype.rmall= EventEmitter.prototype.removeAllListeners;
-*/
-EventEmitter.prototype.proxy = function(mod){
-    var self = this;
-    return function(){
-      mod.apply(this,arguments);
-    }
-}
-/*
-var bc_list = {};
-EventEmitter.prototype.bc = function(event,data){
-  if(!bc_list[event])return;
-  var elist = bc_list[event];
-  for(var )
-}
-EventEmitter.prototype.watch = function(event,func){
-  if(!bc_list[event]) bc_list
-}
-*/
