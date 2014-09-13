@@ -32,6 +32,7 @@ var isArray = Array.isArray || function(obj){
 function EventEmitter(){}
 Class.extend(EventEmitter);
 
+module.exports = EventEmitter;
 exports.EventEmitter = EventEmitter;
 
 // By default EventEmitters will print a warning if more than
