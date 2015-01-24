@@ -1,12 +1,28 @@
 /*!
- * nfmcg: assets/js/lib/util/router.js
+ * core/router.js
  * Authors  : 剪巽 <jianxun.zxl@taobao.com> (https://github.com/fishbar)
  * Create   : 2014-05-23 21:31:08
  * CopyRight 2014 (c) Alibaba Group
+ *
+ * @example
+ *
+ *  var Router = require('core/router');
+ *  Router.init({
+ *    accessKeys: {reporter: /^\w+$/, cate_id: /^\d+$/},
+ *    data: {  // data from caches
+ *      reporter: 'from_cache'
+ *    },
+ *    onSave: function (data) {
+ *      // may be you need to save router info here
+ *    }
+ *  });
+ *
+ *  // watch  hash change, and do your code here
+ *  Router.hashChange(function (data) {
+ *    // your code here
+ *  });
  */
-var cookie = require('./cookie');
-var hashchange = require('../core/jquery.hashchange');
-//@body
+
 /**
  * parsing 解析string to object
  * @param  {string} str  由查询条件组成的string，eg cid:50016349|sid:33780312|start:2012-02-02|end:2012-02-08|dt:1|rid:hot_product
@@ -87,32 +103,46 @@ function equal(a, b) {
 
 module.exports = {
   data : {},
-  cookieName : '',
+  // cookie : '',
   accessList : {},
-  type : 'hash',
+  type : '',
+  /**
+   * init router
+   * @param  {Object} config
+   * {
+   *   type:  optional, 存储方式 ， default hash
+   *   accessKeys:  object, 授权的key, 可被安全使用的,
+   *   data: {} 初始化参数
+   *   onSave: function(data){}  保存路由数据到别的地方
+   * }
+   */
   init : function (config) {
-    this.cookieName = config.rCookie;
-    var type = config.rType;
+    this.accessList = config.accessKeys || {};
+    var type = config.type || 'hash';
+    this.onSave = config.onSave || function () {};
+
     var hash = '';
-    if (type === 'hash') {
+    if (!type || type === 'hash') {
       //don't use it window.location.hash,it has a bug in firefox,the hash will auto decode;
       hash = location.href.split('#!')[1] || '';
     }
-    var cstr = cookie.get(this.cookieName);
     // hash key/value
     var routerObj = filter(parsing(hash, type), this.accessList);
-    // cookie key/value
-    var cookieObj = filter(parsing(cstr, type), this.accessList);
     // hash first, then cookie
-    this.data = this.isEmpty(routerObj) ? cookieObj : routerObj;
+    this.data = routerObj;
     this.type = type;
+    this.update(config.data || {});
   },
   /**
    * 设置允许设置的hash名称列表
-   * @return {[type]}
+   * @param {Object} keys 授权的key
+   * @return {Object}
    */
-  registKeys: function (list) {
-    this.accessList = list;
+  registKeys: function (keys) {
+    var orig = this.accessList;
+    for (var i in keys) {
+      orig[i] = keys[i];
+    }
   },
   /**
    * get 读取查询条件
@@ -140,7 +170,7 @@ module.exports = {
     }
     var hash = stringify(data);
     location.hash = '#!/' + hash;
-    this.save();
+    this.onSave(data);
   },
   clear: function () {
     this.data = {};
@@ -149,18 +179,23 @@ module.exports = {
    * save 保存查询条件 set cookie
    * @param  {object} param 变更的查询条件对象
    */
+  /*
   save : function () {
+    if (!this.cookie) {
+      return;
+    }
     var data = this.data;
     if (data.nocache !== undefined) {
       return;
     }
     var hash = stringify(data);
     // save to cookie
-    cookie.set(this.cookieName, hash);
+    cookie.set(this.cookie, hash);
   },
+  */
   hashChange: function (fn) {
     var self = this;
-    $(window).hashchange(function () {
+    function _change() {
       var hash = location.href.split('#!')[1] || '';
       var hashObj = filter(parsing(hash, self.type), self.accessList);
       if (equal(self.data, hashObj)) {
@@ -168,8 +203,15 @@ module.exports = {
       }
       self.data = hashObj;
       fn(hashObj);
-      self.save();
-    });
+      self.onSave(hashObj);
+    }
+    if (window.addEventListener) {
+      window.addEventListener('hashchange', _change, false);
+    } else if (window.attachEvent) {
+      window.attachEvent('hashchange', _change);
+    } else {
+      console.error('browser not support hashchange');
+    }
   },
   isEmpty: function (obj) {
     var key = true;
