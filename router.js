@@ -14,12 +14,10 @@
  *    },
  *    onSave: function (data) {
  *      // may be you need to save router info here
- *    }
- *  });
- *
- *  // watch  hash change, and do your code here
- *  Router.hashChange(function (data) {
- *    // your code here
+ *    },
+ *    hashChange(function (data) {
+ *      // watch  hash change, and do your code here
+ *    });
  *  });
  */
 
