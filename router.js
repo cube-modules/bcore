@@ -114,22 +114,25 @@ module.exports = {
    *   accessKeys:  object, 授权的key, 可被安全使用的,
    *   data: {} 初始化参数
    *   onSave: function(data){}  保存路由数据到别的地方
+   *   hashChange: function(data){}  事件回调
    * }
    */
   init : function (config) {
     this.accessList = config.accessKeys || {};
     var type = config.type || 'hash';
     this.onSave = config.onSave || function () {};
+    this.hashChange(config.hashChange || function () {});
 
     var hash = '';
     if (!type || type === 'hash') {
       //don't use it window.location.hash,it has a bug in firefox,the hash will auto decode;
       hash = location.href.split('#!')[1] || '';
+      location.hash = '#!' + hash + '/';  // trigger hashchange manually
     }
     // hash key/value
-    var routerObj = filter(parsing(hash, type), this.accessList);
+    // var routerObj = filter(parsing(hash, type), this.accessList);
     // hash first, then cookie
-    this.data = routerObj;
+    // this.data = routerObj;
     this.type = type;
     this.update(config.data || {});
   },
@@ -158,7 +161,7 @@ module.exports = {
    * @return {[type]}       [description]
    */
   update: function (param) {
-    if (!param) {
+    if (!param || this.isEmpty(param)) {
       return;
     }
     var data = this.data;
