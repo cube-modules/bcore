@@ -130,8 +130,8 @@ module.exports = {
 
     var hash = location.href.split('#!')[1] || '';
     var routerObj = filter(parsing(hash, this.type), this.accessList);
-    config.hashChange(routerObj);
     this.data = routerObj;
+    config.hashChange(routerObj);
     this.update(config.data || {}, true);
   },
   /**
