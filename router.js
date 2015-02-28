@@ -14,12 +14,10 @@
  *    },
  *    onSave: function (data) {
  *      // may be you need to save router info here
+ *    },
+ *    hashChange(function (data) {
+ *      // watch  hash change, and do your code here
  *    }
- *  });
- *
- *  // watch  hash change, and do your code here
- *  Router.hashChange(function (data) {
- *    // your code here
  *  });
  */
 
@@ -101,11 +99,19 @@ function equal(a, b) {
   return flag;
 }
 
+function clone(obj) {
+  var copy = {};
+  for (var key in obj) {
+    copy[key] = obj[key];
+  }
+  return copy;
+}
+
 module.exports = {
   data : {},
   // cookie : '',
   accessList : {},
-  type : '',
+  type : 'hash',
   /**
    * init router
    * @param  {Object} config
@@ -114,24 +120,19 @@ module.exports = {
    *   accessKeys:  object, 授权的key, 可被安全使用的,
    *   data: {} 初始化参数
    *   onSave: function(data){}  保存路由数据到别的地方
+   *   hashChange: function(data){}  事件回调
    * }
    */
   init : function (config) {
     this.accessList = config.accessKeys || {};
-    var type = config.type || 'hash';
     this.onSave = config.onSave || function () {};
+    this.hashChange(config.hashChange || function () {});
 
-    var hash = '';
-    if (!type || type === 'hash') {
-      //don't use it window.location.hash,it has a bug in firefox,the hash will auto decode;
-      hash = location.href.split('#!')[1] || '';
-    }
-    // hash key/value
-    var routerObj = filter(parsing(hash, type), this.accessList);
-    // hash first, then cookie
+    var hash = location.href.split('#!')[1] || '';
+    var routerObj = filter(parsing(hash, this.type), this.accessList);
     this.data = routerObj;
-    this.type = type;
-    this.update(config.data || {});
+    config.hashChange(routerObj);
+    this.update(config.data || {}, true);
   },
   /**
    * 设置允许设置的hash名称列表
@@ -155,13 +156,19 @@ module.exports = {
   /**
    * 更新 url 中的hash
    * @param  {[type]} param [description]
+   * @param  {Boolean} trigger optional
    * @return {[type]}       [description]
    */
-  update: function (param) {
-    if (!param) {
+  update: function (param, trigger) {
+    if (!param || this.isEmpty(param)) {
       return;
     }
-    var data = this.data;
+    var data;
+    if (trigger) {
+      data = clone(this.data);
+    } else {
+      data = this.data;
+    }
     // merge
     for (var i in param) {
       if (this.accessList[i]) {
