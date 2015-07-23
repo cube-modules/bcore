@@ -12,15 +12,16 @@ Class.extend = function (newClass, proto) {
   } else if (!newClass) {
     newClass = function () {};
   }
-  /*
-  var newClassName = constructor.name;
-  var code = 'return function ' + newClassName + '(){';
+
+  var className = constructor.name;
+  var code = 'function ' + className + '() {';
   code += 'var args = Array.prototype.slice.apply(arguments);';
   code += 'sfn.apply(this, args);';
   code += 'fn.apply(this, args);';
-  code += '};';
-  var newClass = new Function('fn', 'sfn', code)(constructor, this);
-  */
+  // code += 'fn.prototype.__constructor && fn.__constructor.apply(this, arguments);';
+  code += '}; return ' + className + ';';
+  newClass = new Function('fn', 'sfn', code)(newClass, this);
+
   // Instantiate a base class (but only create the instance,
   // don't run the init constructor)
   var superClass = this;
@@ -53,6 +54,7 @@ Class.extend = function (newClass, proto) {
   newClass.prototype = prototype;
   // And make this class extendable
   newClass.extend = arguments.callee;
+  /*
   newClass.create = function () {
     var len = arguments.length;
     var args = ['cls', 'a'];
@@ -68,6 +70,7 @@ Class.extend = function (newClass, proto) {
     fn.__constructor && fn.__constructor.apply(fn, arguments);
     return fn;
   };
+  */
 
   return newClass;
 };

@@ -1,13 +1,10 @@
 {
-  "name": "@ali/core",
-  "title": "Core",
+  "name": "bcore",
+  "title": "bcore",
   "description": "Core JavaScript library for browser runtime",
-  "version": "0.0.6",
+  "version": "0.0.1",
   "author": {
-    "name": "jianxun.zxl"
-  },
-  "publishConfig": {
-    "registry": "http://registry.npm.alibaba-inc.com"
+    "name": "fish"
   },
   "repository": {
     "type": "git",
@@ -26,8 +23,8 @@
   },
   "maintainers": [
     {
-      "name": "jianxun.zxl",
-      "email": "jianxun.zxl@alibaba-inc.com"
+      "name": "fish",
+      "email": "zhengxinlin@gmail.com"
     }
   ]
 }
