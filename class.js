@@ -13,7 +13,7 @@ Class.extend = function (newClass, proto) {
     newClass = function () {};
   }
 
-  var className = constructor.name;
+  var className = newClass.name;
   var code = 'function ' + className + '() {';
   code += 'var args = Array.prototype.slice.apply(arguments);';
   code += 'sfn.apply(this, args);';
