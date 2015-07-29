@@ -18,9 +18,10 @@ function traver(parent, cb) { //深度优先遍历
   }
 }
 
+
 /**
- * isNone 判断是否是数字
- * @param {Float} d
+ * isNone 判断是否存在
+ * @param {String/Function} d
  * @return {Boolean}
  */
 function isNone(d) {
@@ -97,7 +98,6 @@ function deepMerge(dest, src, depth) {
   return result;
 }
 
-  
 
 module.exports = {
   merge: merge,
