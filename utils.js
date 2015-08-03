@@ -67,17 +67,17 @@ function clone(obj){
   return result;
 }
 
-/**
- * deepMerge 深度合并
- * @param  {Object} dest  被合并的对象
- * @param  {Object} src   发起合并的对象
- * @param  {Number} depth 合并深度
- * @return {Object}       合并结束的对象
- */
-function deepMerge(dest, src, depth) {
-  var i, j, len, src, result = clone(dest), depth = depth || 0;
-  console.log(depth,'depth')
-    if(depth++ >= 3) {
+function deepClone(src) {
+  return deepMerge({}, src);
+}
+
+var maxDepth = 3;
+function deepMerge(dest, src, isDirect, depth) {
+  var i, j, len, src, depth = depth || 0;
+
+  var result = isDirect ? dest : clone(dest);
+
+    if (depth++ >= maxDepth) {
       console.log('层数过深, 全部继承');
       return clone(src);
     }
@@ -87,22 +87,31 @@ function deepMerge(dest, src, depth) {
         var value = src[i];
         var destValue = dest[i];
         if(value === destValue) continue;
-        if(value === undefined || value === null) continue;
+        if(value === undefined) continue;
         if (destValue && typeof (destValue) === 'object' && typeof (value) === 'object') {
-          result[i] = deepMerge(destValue, value, depth);
+          result[i] = deepMerge(destValue, value, isDirect, depth);
           continue;
         }
+        if (typeof(value) === 'object' && (!isDirect)) value = deepMerge({}, value, false);
         result[i] = value;
       }
     }
   return result;
 }
 
-
+function deepMergeCopy(dest, src){
+  return deepMerge(dest, src, false);
+}
+function deepMergeDirect(dest, src){
+  return deepMerge(dest, src, false);
+}
 module.exports = {
-  merge: merge,
-  isNone: isNone,
-  traver: traver,
-  deepMerge: deepMerge,
-  clone: clone
+  'merge': merge,
+  'isNone': isNone,
+  'traver': traver,
+  'deepMerge': deepMerge,
+  'deepMergeDirect': deepMergeDirect,
+  'deepMergeCopy': deepMergeCopy,
+  'clone': clone,
+  'deepClone': deepClone
 };
