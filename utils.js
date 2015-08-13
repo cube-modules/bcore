@@ -68,7 +68,8 @@ function clone(obj){
 }
 
 function deepClone(src) {
-  return deepMerge({}, src);
+  var input = Array.isArray(src)?[]:{};
+  return deepMerge(input, src);
 }
 
 var maxDepth = 3;
@@ -92,7 +93,7 @@ function deepMerge(dest, src, isDirect, depth) {
           result[i] = deepMerge(destValue, value, isDirect, depth);
           continue;
         }
-        if (typeof(value) === 'object' && (!isDirect)) value = deepMerge({}, value, false);
+        if (typeof(value) === 'object' && (!isDirect)) value = deepClone(value);
         result[i] = value;
       }
     }
