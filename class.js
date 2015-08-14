@@ -13,6 +13,7 @@ Class.extend = function (newClass, proto) {
     newClass = function () {};
   }
 
+  /*
   var className = newClass.name;
   var code = 'function ' + className + '() {';
   code += 'var args = Array.prototype.slice.apply(arguments);';
@@ -20,7 +21,9 @@ Class.extend = function (newClass, proto) {
   code += 'fn.apply(this, args);';
   // code += 'fn.prototype.__constructor && fn.__constructor.apply(this, arguments);';
   code += '}; return ' + className + ';';
+  console.log(code);
   newClass = new Function('fn', 'sfn', code)(newClass, this);
+  */
 
   // Instantiate a base class (but only create the instance,
   // don't run the init constructor)

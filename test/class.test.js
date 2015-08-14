@@ -33,7 +33,7 @@ describe('class.js', function () {
       this.value = a + b;
     });
     var TestClassB = TestClassA.extend(function TestClassB(a, b, c) {
-      // this._super.apply(this, [a, b]);
+      this._super.apply(this, [a, b]);
       this.sum = a + b + c;
     });
     var test = new TestClassB(1, 2, 3);
@@ -52,7 +52,7 @@ describe('class.js', function () {
     });
     var TestClassB = TestClassA.extend(
       function TestClassB(a, b, c) {
-        // this._super.apply(this, [a, b]);
+        this._super.apply(this, [a, b]);
         this.sum = a + b + c;
       },
       {

@@ -23,3 +23,31 @@ var class = require('bcore/class');
 var event = require('bcore/event');
 var router = require('bcore/router');
 ```
+
+## DOC
+
+### class
+```
+// 用法
+function Constructor() {
+  // super class constructor
+  this._super.call(this, args....);
+  // super class functions
+  this._super.prototype.funcA();
+}
+Class.extend(Constructor, {
+  //properties
+});
+```
+
+### event
+
+```
+
+``
+
+### router
+
+```
+
+```
