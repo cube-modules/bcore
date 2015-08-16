@@ -72,6 +72,17 @@ function deepClone(src) {
   return deepMerge(input, src);
 }
 
+
+function isNeedClone(d){
+  if(!d) return false;
+  if(d instanceof HTMLElement) return false;
+  if(d[0] && d[0] instanceof HTMLElement) return false;
+  if(d.globalCompositeOperation) return false;//ctx的情况
+  
+  //还需判断div 等节点
+  return true;
+}
+
 var maxDepth = 3;
 function deepMerge(dest, src, isDirect, depth) {
   var i, j, len, src, depth = depth || 0;
@@ -80,7 +91,7 @@ function deepMerge(dest, src, isDirect, depth) {
 
     if (depth++ >= maxDepth) {
       console.log('层数过深, 全部继承');
-      return clone(src);
+      return src;
     }
     //
     for (i in src) {
@@ -93,7 +104,7 @@ function deepMerge(dest, src, isDirect, depth) {
           result[i] = deepMerge(destValue, value, isDirect, depth);
           continue;
         }
-        if (typeof(value) === 'object' && (!isDirect)) value = deepClone(value);
+        if (typeof(value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
         result[i] = value;
       }
     }
