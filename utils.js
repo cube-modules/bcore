@@ -101,8 +101,14 @@ function deepMerge(dest, src, isDirect, depth) {
         if(value === destValue) continue;
         if(value === undefined) continue;
         if (destValue && typeof (destValue) === 'object' && typeof (value) === 'object') {
-          result[i] = deepMerge(destValue, value, isDirect, depth);
-          continue;
+          if(Array.isArray(destValue) !== Array.isArray(value)){ // 继承和被继承的 一个是数组 一个是对象
+            if (typeof(value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
+            result[i] = value;
+            continue;
+          } else{
+             result[i] = deepMerge(destValue, value, isDirect, depth);
+             continue;
+          }
         }
         if (typeof(value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
         result[i] = value;
