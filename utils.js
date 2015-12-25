@@ -83,7 +83,7 @@ function isNeedClone(d){
   return true;
 }
 
-var maxDepth = 3;
+var maxDepth = 4;
 function deepMerge(dest, src, isDirect, depth) {
   var i, j, len, src, depth = depth || 0;
 
@@ -101,16 +101,20 @@ function deepMerge(dest, src, isDirect, depth) {
         if(value === destValue) continue;
         if(value === undefined) continue;
         if (destValue && typeof (destValue) === 'object' && typeof (value) === 'object') {
+          if(!isNeedClone(value)){
+            result[i] = value;
+            continue;
+          }
           if(Array.isArray(destValue) !== Array.isArray(value)){ // 继承和被继承的 一个是数组 一个是对象
             if (typeof(value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
             result[i] = value;
             continue;
-          } else{
-             result[i] = deepMerge(destValue, value, isDirect, depth);
-             continue;
-          }
+          } 
+
+          result[i] = deepMerge(destValue, value, isDirect, depth);
+          continue;
         }
-        if (typeof(value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
+        if (typeof (value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
         result[i] = value;
       }
     }
@@ -123,6 +127,21 @@ function deepMergeCopy(dest, src){
 function deepMergeDirect(dest, src){
   return deepMerge(dest, src, false);
 }
+
+/**
+ * switchValue 如果是非函数 返回本身 如果是函数 执行之，常用于options内部的判断
+ * @param  {Any} f 函数或数值
+ * @param  {Any} a 参数1
+ * @param  {Any} b 参数2
+ * @param  {Any} c 参数3
+ * @param  {Any} d 参数4
+ * @return {Any}   返回值
+ */
+function switchValue(f, a, b, c, d){
+  if(typeof(f) === 'function') return f(a, b, c, d);
+  return f;
+}
+
 module.exports = {
   'merge': merge,
   'isNone': isNone,
@@ -131,5 +150,6 @@ module.exports = {
   'deepMergeDirect': deepMergeDirect,
   'deepMergeCopy': deepMergeCopy,
   'clone': clone,
-  'deepClone': deepClone
+  'deepClone': deepClone,
+  'switchValue': switchValue
 };
