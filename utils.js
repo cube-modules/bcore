@@ -76,7 +76,7 @@ function deepClone(src) {
 function isNeedClone(d){
   if(!d) return false;
   if(root.HTMLElement && d instanceof root.HTMLElement) return false;
-  if(root.HTMLElement d[0] && d[0] instanceof HTMLElement) return false;
+  if(root.HTMLElement && d[0] && d[0] instanceof HTMLElement) return false;
   if(d.globalCompositeOperation) return false;//ctx的情况
   
   //还需判断div 等节点
