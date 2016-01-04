@@ -1,0 +1,91 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@2.14.7
+3 info using node@v4.2.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/zhouningyi/git/datav/bcore',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/zhouningyi/.npm/bcore/0.0.11/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/zhouningyi/.npm/bcore/0.0.11/package.tgz',
+9 verbose tar pack   '/Users/zhouningyi/git/datav/bcore' ]
+10 verbose tarball /Users/zhouningyi/.npm/bcore/0.0.11/package.tgz
+11 verbose folder /Users/zhouningyi/git/datav/bcore
+12 info prepublish bcore@0.0.11
+13 verbose addLocalTarball adding from inside cache /Users/zhouningyi/.npm/bcore/0.0.11/package.tgz
+14 silly cache afterAdd bcore@0.0.11
+15 verbose afterAdd /Users/zhouningyi/.npm/bcore/0.0.11/package/package.json not in flight; writing
+16 verbose afterAdd /Users/zhouningyi/.npm/bcore/0.0.11/package/package.json written
+17 silly publish { name: 'bcore',
+17 silly publish   title: 'bcore',
+17 silly publish   description: 'Core JavaScript library for browser runtime',
+17 silly publish   version: '0.0.11',
+17 silly publish   author: { name: 'fish' },
+17 silly publish   repository: { type: 'git', url: 'https://github.com/' },
+17 silly publish   keywords: [ 'javascript', 'browser', 'library' ],
+17 silly publish   dependencies: {},
+17 silly publish   devDependencies: { mocha: '*', 'expect.js': '0.3.1', jscoverage: '0.5.6' },
+17 silly publish   maintainers: [ { name: 'fish', email: 'zhengxinlin@gmail.com' } ],
+17 silly publish   readme: 'bcore\n=========================\n\n浏览器基础库，提供 event, class, router 等等模块的封装\n\n\n## classes\n\nclass.js    // 基类， 所有继承关系的class，都需要继承自这里\nevent.js    // 来自node.js，提供基础事件支持\nrouter.js   // 提供路由支持，单页应用，或者url存储路径的情况，都可以使用这个包\ncookie.js   // cookie操作\nutil.js\n\nincomming\n\ncache.js    -- localStorage, db etc.\n\n## usage\n\n```js\nvar class = require(\'bcore/class\');\nvar event = require(\'bcore/event\');\nvar router = require(\'bcore/router\');\n```\n\n## DOC\n\n### class\n```\n// 用法\nfunction Constructor() {\n  // super class constructor\n  this._super.call(this, args....);\n  // super class functions\n  this._super.prototype.funcA();\n}\nClass.extend(Constructor, {\n  //properties\n});\n```\n\n### event\n\n```\n\n``\n\n### router\n\n```\n\n```\n',
+17 silly publish   readmeFilename: 'README.md',
+17 silly publish   gitHead: '6c4ca7208b33d2d0db0fb839cd05c3c16236ca9a',
+17 silly publish   _id: 'bcore@0.0.11',
+17 silly publish   scripts: {},
+17 silly publish   _shasum: '0a773cf05662c47cd4bf11c2ffcb33f1c4d07653',
+17 silly publish   _from: '.' }
+18 verbose getPublishConfig undefined
+19 silly mapToRegistry name bcore
+20 silly mapToRegistry using default registry
+21 silly mapToRegistry registry https://registry.npmjs.org/
+22 silly mapToRegistry uri https://registry.npmjs.org/bcore
+23 verbose publish registryBase https://registry.npmjs.org/
+24 silly publish uploading /Users/zhouningyi/.npm/bcore/0.0.11/package.tgz
+25 verbose request uri https://registry.npmjs.org/bcore
+26 verbose request sending authorization for write operation
+27 info attempt registry request try #1 at 15:12:20
+28 verbose request using bearer token for auth
+29 verbose request id 151f2489ab8e06e0
+30 http request PUT https://registry.npmjs.org/bcore
+31 http 403 https://registry.npmjs.org/bcore
+32 verbose headers { 'content-type': 'application/json',
+32 verbose headers   'cache-control': 'max-age=300',
+32 verbose headers   'content-length': '96',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   date: 'Fri, 25 Dec 2015 07:12:23 GMT',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   connection: 'keep-alive',
+32 verbose headers   'x-served-by': 'cache-lhr6325-LHR',
+32 verbose headers   'x-cache': 'MISS',
+32 verbose headers   'x-cache-hits': '0',
+32 verbose headers   'x-timer': 'S1451027541.807533,VS0,VE1590' }
+33 verbose request invalidating /Users/zhouningyi/.npm/registry.npmjs.org/bcore on PUT
+34 error publish Failed PUT 403
+35 verbose stack Error: "You cannot publish over the previously published version 0.0.11." : bcore
+35 verbose stack     at makeError (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+35 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+35 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+35 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:198:22)
+35 verbose stack     at emitTwo (events.js:87:13)
+35 verbose stack     at Request.emit (events.js:172:7)
+35 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1063:14)
+35 verbose stack     at emitOne (events.js:82:20)
+35 verbose stack     at Request.emit (events.js:169:7)
+35 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+36 verbose statusCode 403
+37 verbose pkgid bcore
+38 verbose cwd /Users/zhouningyi/git/datav/bcore
+39 error Darwin 14.5.0
+40 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+41 error node v4.2.1
+42 error npm  v2.14.7
+43 error code E403
+44 error "You cannot publish over the previously published version 0.0.11." : bcore
+45 error If you need help, you may report this error at:
+45 error     <https://github.com/npm/npm/issues>
+46 verbose exit [ 1, true ]

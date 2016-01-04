@@ -27,7 +27,7 @@ function traver(parent, cb) { //深度优先遍历
 function isNone(d) {
   return (d === null || d === undefined || isNaN(d));
 }
-
+var root = this
 /**
  * extend  合并方法
  * @param  {Objects}  需要扩展的对象
@@ -75,8 +75,8 @@ function deepClone(src) {
 
 function isNeedClone(d){
   if(!d) return false;
-  if(d instanceof HTMLElement) return false;
-  if(d[0] && d[0] instanceof HTMLElement) return false;
+  if(root.HTMLElement && d instanceof root.HTMLElement) return false;
+  if(root.HTMLElement d[0] && d[0] instanceof HTMLElement) return false;
   if(d.globalCompositeOperation) return false;//ctx的情况
   
   //还需判断div 等节点
