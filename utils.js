@@ -72,8 +72,7 @@ function deepClone(src) {
   return deepMerge(input, src);
 }
 
-
-function isNeedClone(d){
+function isNeedClone(d) {
   if(!d) return false;
   if(root.HTMLElement && d instanceof root.HTMLElement) return false;
   if(root.HTMLElement && d[0] && d[0] instanceof HTMLElement) return false;
@@ -83,16 +82,16 @@ function isNeedClone(d){
   return true;
 }
 
-var maxDepth = 4;
-function deepMerge(dest, src, isDirect, depth) {
+var maxDepth = 5;
+function deepMerge(dest, src, directs, depth) {
   var i, j, len, src, depth = depth || 0;
-
-  var result = isDirect ? dest : clone(dest);
-
-    if (depth++ >= maxDepth) {
-      console.log('层数过深, 全部继承');
-      return src;
-    }
+  var result = dest;
+  // var result = isDirect ? dest : clone(dest);
+  if (depth >= maxDepth) {
+    console.log('层数过深, 全部继承');
+    return src;
+  }
+  depth++;
     //
     for (i in src) {
       if (src.hasOwnProperty(i)) {
@@ -101,32 +100,26 @@ function deepMerge(dest, src, isDirect, depth) {
         if(value === destValue) continue;
         if(value === undefined) continue;
         if (destValue && typeof (destValue) === 'object' && typeof (value) === 'object') {
-          if(!isNeedClone(value)){
+          if (!isNeedClone(value) || (directs && i in directs)) {
             result[i] = value;
             continue;
           }
-          if(Array.isArray(destValue) !== Array.isArray(value)){ // 继承和被继承的 一个是数组 一个是对象
-            if (typeof(value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
+          if (Array.isArray(destValue) !== Array.isArray(value)) { // 继承和被继承的 一个是数组 一个是对象
+            value = deepClone(value);
             result[i] = value;
             continue;
-          } 
+          }
 
-          result[i] = deepMerge(destValue, value, isDirect, depth);
+          result[i] = deepMerge(destValue, value, directs, depth);
           continue;
         }
-        if (typeof (value) === 'object' && (!isDirect) && isNeedClone(value)) value = deepClone(value);
+        if (typeof (value) === 'object' && isNeedClone(value)) value = deepClone(value);
         result[i] = value;
       }
     }
   return result;
 }
 
-function deepMergeCopy(dest, src){
-  return deepMerge(dest, src, false);
-}
-function deepMergeDirect(dest, src){
-  return deepMerge(dest, src, false);
-}
 
 /**
  * switchValue 如果是非函数 返回本身 如果是函数 执行之，常用于options内部的判断
@@ -137,18 +130,42 @@ function deepMergeDirect(dest, src){
  * @param  {Any} d 参数4
  * @return {Any}   返回值
  */
-function switchValue(f, a, b, c, d){
-  if(typeof(f) === 'function') return f(a, b, c, d);
+function switchValue(f, a, b, c, d) {
+  if(typeof (f) === 'function') return f(a, b, c, d);
   return f;
 }
 
+
+var root = this;
+function getContainer(container) {
+  if (root.HTMLElement && container instanceof root.HTMLElement) return container;
+  if (root.HTMLElement && container[0] && container[0] instanceof root.HTMLElement) return container[0];
+  if (typeof container === 'string') {
+    if (container.charAt(0) === '.') {
+      var className = container.slice(1);
+      return container = document.getElementsByClassName(className)[0];
+    } else {
+      var id;
+      if (container.charAt(0) !== '#') {
+        id = container;
+      } else {
+        id = container.slice(1);
+      }
+      return container = document.getElementById(id);
+    }
+    if (!container) {
+      throw '没有container ';
+    }
+  }
+}
+
 module.exports = {
+  'getContainer': getContainer,
   'merge': merge,
+  'extend': merge,
   'isNone': isNone,
   'traver': traver,
   'deepMerge': deepMerge,
-  'deepMergeDirect': deepMergeDirect,
-  'deepMergeCopy': deepMergeCopy,
   'clone': clone,
   'deepClone': deepClone,
   'switchValue': switchValue

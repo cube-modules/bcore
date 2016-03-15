@@ -121,11 +121,11 @@ describe('utils.js', function () {
 
     it('expect deepMerge function  be ok', function () {
       var dest = {
-        a: function(a){return a + 1;},
-        b: function(a){return a + 2;}
+        a: function (a) { return a + 1; },
+        b: function (a) { return a + 2; }
       };
       var source = {
-        b: function(a){return a;},
+        b: function (a) { return a; },
       }
       var result = Utils.deepMerge(dest, source);
       var func = result.b;
@@ -155,8 +155,38 @@ describe('utils.js', function () {
         }
       };
       var merged = Utils.deepMerge(dest, source);
+      expect(JSON.stringify(merged)).to.be(JSON.stringify(dest));
+    });
+
+   it('expect  deepMerge, "ignore object" be ok', function () {
+      var dest = {
+        a:{
+          b: 2,
+          c: {
+            d:{
+              e: 1,
+              f: 2
+            }
+          }
+        }
+      };
+
+      var source = {
+        a: {
+          b: 3,
+          c: {
+            d:{
+              e: 2,
+              c: 2
+            }
+          }
+        }
+      };
+      var merged = Utils.deepMerge(dest, source, {d:1});
+      
       expect(JSON.stringify(merged)).to.be(JSON.stringify(source));
     });
+
 
    it('expect clone, "clone object" be ok', function () {
       var obj = {
