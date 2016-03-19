@@ -136,7 +136,8 @@ function switchValue(f, a, b, c, d) {
 }
 
 var root;
-if(typeof process === 'function'){
+if(typeof process === 'object'){
+  root = global;
 } else {
   root = window;
 }
