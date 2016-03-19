@@ -135,8 +135,12 @@ function switchValue(f, a, b, c, d) {
   return f;
 }
 
+var root;
+if(typeof process === 'function'){
+} else {
+  root = window;
+}
 
-var root = global;
 function getContainer(container) {
   if (root.HTMLElement && container instanceof root.HTMLElement) return container;
   if (root.HTMLElement && container[0] && container[0] instanceof root.HTMLElement) return container[0];
