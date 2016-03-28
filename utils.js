@@ -85,7 +85,7 @@ function isNeedClone(d) {
 var maxDepth = 5;
 function deepMerge(dest, src, directs, depth) {
   var i, j, len, src, depth = depth || 0;
-  var result = dest;
+  var result = clone(dest);
   // var result = isDirect ? dest : clone(dest);
   if (depth >= maxDepth) {
     console.log('层数过深, 全部继承');
