@@ -82,7 +82,7 @@ function isNeedClone(d) {
   return true;
 }
 
-var maxDepth = 5;
+var maxDepth = 8;
 function deepMerge(dest, src, directs, depth) {
   var i, j, len, src, depth = depth || 0;
   var result = clone(dest);
@@ -136,10 +136,10 @@ function switchValue(f, a, b, c, d) {
 }
 
 var root;
-if(typeof process === 'object'){
-  root = global;
-} else {
+if (typeof window === 'object') {
   root = window;
+} else {
+  root = {};
 }
 
 function getContainer(container) {
