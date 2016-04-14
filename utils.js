@@ -162,6 +162,7 @@ function getContainer(container) {
       throw '没有container ';
     }
   }
+  return container;
 }
 
 module.exports = {
