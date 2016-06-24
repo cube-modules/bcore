@@ -174,5 +174,5 @@ module.exports = {
   'deepMerge': deepMerge,
   'clone': clone,
   'deepClone': deepClone,
-  'switchValue': switchValue
+  'switchValue': switchValue,
 };
