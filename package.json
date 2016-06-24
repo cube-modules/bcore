@@ -2,7 +2,7 @@
   "name": "bcore",
   "title": "bcore",
   "description": "Core JavaScript library for browser runtime",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "author": {
     "name": "fish"
   },
