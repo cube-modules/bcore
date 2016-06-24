@@ -121,6 +121,49 @@ function deepMerge(dest, src, directs, depth) {
 }
 
 
+function deepMergeWithoutArray(dest, src, directs, depth) {
+  var i, j, len, src, depth = depth || 0;
+  var result = clone(dest);
+  if (depth >= maxDepth) {
+    console.log('层数过深, 全部继承');
+    return src;
+  }
+  depth++;
+  //
+  for (i in src) {
+    if (src.hasOwnProperty(i)) {
+      var value = src[i];
+      var destValue = dest[i];
+      if(value === destValue) continue;
+      if(value === undefined) continue;
+      if (destValue && typeof (destValue) === 'object' && typeof (value) === 'object') {
+        if (Array.isArray(destValue) && Array.isArray(value)) {
+          result[i] = value;
+          continue;
+        }
+
+        if (!isNeedClone(value) || (directs && i in directs)) {
+          result[i] = value;
+          continue;
+        }
+
+        if (Array.isArray(destValue) !== Array.isArray(value)) { // 继承和被继承的 一个是数组 一个是对象
+          value = deepClone(value);
+          result[i] = value;
+          continue;
+        }
+
+        result[i] = deepMergeWithoutArray(destValue, value, directs, depth);
+        continue;
+      }
+      if (typeof (value) === 'object' && isNeedClone(value)) value = deepClone(value);
+      result[i] = value;
+    }
+  }
+  return result;
+}
+
+
 /**
  * switchValue 如果是非函数 返回本身 如果是函数 执行之，常用于options内部的判断
  * @param  {Any} f 函数或数值
@@ -174,5 +217,6 @@ module.exports = {
   'deepMerge': deepMerge,
   'clone': clone,
   'deepClone': deepClone,
-  'switchValue': switchValue
+  'switchValue': switchValue,
+  'deepMergeWithoutArray': deepMergeWithoutArray
 };
