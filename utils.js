@@ -82,6 +82,10 @@ function isNeedClone(d) {
   return true;
 }
 
+function _isObject(v){
+  return v && typeof v === 'object' && !(v instanceof Date);
+}
+
 var maxDepth = 8;
 function deepMerge(dest, src, directs, depth) {
   var i, j, len, src, depth = depth || 0;
@@ -99,7 +103,7 @@ function deepMerge(dest, src, directs, depth) {
         var destValue = dest[i];
         if(value === destValue) continue;
         if(value === undefined) continue;
-        if (destValue && typeof (destValue) === 'object' && typeof (value) === 'object') {
+        if (_isObject(destValue) && _isObject(value)){
           if (!isNeedClone(value) || (directs && i in directs)) {
             result[i] = value;
             continue;
@@ -109,11 +113,10 @@ function deepMerge(dest, src, directs, depth) {
             result[i] = value;
             continue;
           }
-
           result[i] = deepMerge(destValue, value, directs, depth);
           continue;
         }
-        if (typeof (value) === 'object' && isNeedClone(value)) value = deepClone(value);
+        if (_isObject(value) && isNeedClone(value)) value = deepClone(value);
         result[i] = value;
       }
     }
